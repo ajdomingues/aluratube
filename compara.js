@@ -1,121 +1,56 @@
 import React from "react";
-import config from "../config.json";
-import styled from "styled-components";
-import { CSSReset } from "../src/components/CSSReset";
-import Menu from "../src/components/Menu";
-import { StyledTimeline } from "../src/components/Timeline";
+import styled from "styled-components"
 
-function HomePage() {
-    const estilosDaHomePage = {
-        // backgroundColor: "red" 
-    };
-    const [valorDoFiltro, setValorDoFiltro] = React.useState("");
-
-    return (
-        <>
-            <CSSReset />
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                flex: 1,
-                // backgroundColor: "red",
-            }}>
-                {/* Prop Drilling */}
-                <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
-                <Header />
-                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}>
-                    Conteúdo
-                </Timeline>
-            </div>
-        </>
-    );
-}
-
-export default HomePage
-
-// function Menu() {
-//     return (
-//         <div>
-//             Menu
-//         </div>
-//     )
-// }
-
-
-const StyledHeader = styled.div`
-    img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
+const StyledSearch = styled.div`
+  display: flex;
+  flex-direction: row;
+  border: 1px solid ${({ theme }) => theme.borderBase};
+  max-width: 425px;
+  width: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  
+  input {
+    width: 80%;
+    padding: 4px 6px;
+    border: none;
+    outline: none;
+    color: ${({ theme }) => theme.textColorBase};
+    background-color: ${({ theme }) => theme.backgroundBase};
+  }
+  button {
+    flex: 1;
+    cursor: pointer;
+    border: none;
+    background-color: ${({ theme }) => theme.backgroundLevel2};
+    box-shadow: 0 1px 0 rgb(0 0 0 / 10%);
+    border-left: 1px solid ${({ theme }) => theme.borderBase};
+    width: 40px;
+    height: 40px;
+    @media (min-width: 600px) {
+      width: 64px;
+      height: 40px;
     }
-    .user-info {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 16px 32px;
-        gap: 16px;
-    }
+  }
 `;
-const StyledBanner = styled.div`
-    background-color: blue;
-    background-image: url(${({ bg }) => bg});
-    /* background-image: url(${config.bg}); */
-    height: 230px;
-`;
-function Header() {
-    return (
-        <StyledHeader>
-            <StyledBanner bg={config.bg} />
-            <section className="user-info">
-                <img src={`https://github.com/${config.github}.png`} />
-                <div>
-                    <h2>
-                        {config.name}
-                    </h2>
-                    <p>
-                        {config.job}
-                    </p>
-                </div>
-            </section>
-        </StyledHeader>
-    )
-}
 
-function Timeline({ searchValue, ...propriedades }) {
-    // console.log("Dentro do componente", propriedades.playlists);
-    const playlistNames = Object.keys(propriedades.playlists);
-    // Statement
-    // Retorno por expressão
+// Home 
+// Menu
+// Search
+// Informação sempre desce
+
+export default function Search({ valorDoFiltro, setValorDoFiltro }) {
+    // const [valorDaBusca, setValorDaBusca] = React.useState("Teste");
+    // console.log("Search", valorDaBusca)
+    const valorDaBusca = valorDoFiltro;
+    const setValorDaBusca = setValorDoFiltro;
+
     return (
-        <StyledTimeline>
-            {playlistNames.map((playlistName) => {
-                const videos = propriedades.playlists[playlistName];
-                // console.log(playlistName);
-                // console.log(videos);
-                return (
-                    <section key={playlistName}>
-                        <h2>{playlistName}</h2>
-                        <div>
-                            {videos
-                                .filter((video) => {
-                                    const titleNormalized = video.title.toLowerCase();
-                                    const searchValueNormalized = searchValue.toLowerCase();
-                                    return titleNormalized.includes(searchValueNormalized)
-                                })
-                                .map((video) => {
-                                    return (
-                                        <a key={video.url} href={video.url}>
-                                            <img src={video.thumb} />
-                                            <span>
-                                                {video.title}
-                                            </span>
-                                        </a>
-                                    )
-                                })}
-                        </div>
-                    </section>
-                )
-            })}
-        </StyledTimeline>
+        <StyledSearch>
+            <input type="text" onChange={(e) => setValorDaBusca(e.target.value)} value={valorDaBusca} />
+            <button>
+                🔎
+            </button>
+        </StyledSearch>
     )
 }

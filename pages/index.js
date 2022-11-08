@@ -24,6 +24,7 @@ function HomePage() {
                 flex: 1,
             }}>
                 {/* {mensagem} */}
+                {/* Prop Drilling */}
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
                 <Header />
                 <Timeline searchValue={valorDoFiltro} playlists={config.playlists}>
@@ -53,7 +54,7 @@ img{
     margin-top: 10px;
 }
 .user-info{
-    margin-top: 50px;
+    /* margin-top: 50px; */
     display:flex;
     align-items: center;
     width: 100%;
@@ -64,7 +65,7 @@ img{
 width: 1512px;
 height: 230px;
 margin-top: 50px;
-margin-bottom: -75px;
+/* margin-bottom: -75px; */
 position: relative;
 left:0px;
 border-radius: 0%;
@@ -83,24 +84,24 @@ function Header() {
         <StyledHeader>
             {/* banner             */}
             {/* <StyledBanner bg={config.banner}/> */}
-             <img className="banner" src={config.banner} /> 
+            <img className="banner" src={config.banner} />
             {/* informações de usuário */}
             <section className="user-info">
                 <img src={`https://github.com/${config.github}.png`} />
                 <div>
                     <h2>
                         {config.name}
-                        </h2>
+                    </h2>
                     <p>
                         {config.job}
-                        </p>
+                    </p>
                 </div>
             </section>
         </StyledHeader>
     )
 }
 // ou props
-function Timeline({searchValue, ...propriedades}) {
+function Timeline({ searchValue, ...propriedades }) {
     // console.log("Dentro do componente", props.playlists);
     const playlistNames = Object.keys(propriedades.playlists);
     // Statement
