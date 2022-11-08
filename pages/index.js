@@ -45,7 +45,7 @@ const StyledHeader = styled.div`
 img{
     width:80px;
     height:80px;
-    border-radius:50%;
+    border-radius:40px;
 }
 .user-info{
     margin-top: 50px;
@@ -55,10 +55,19 @@ img{
     padding: 16px 32px;
     gap: 16px;
 }
+.banner{
+width: 1512px;
+height: 230px;
+margin-top: 56px;
+position: relative;
+left:0px;
+border-radius: 0px;
+}
 `;
 function Header() {
     return (
         <StyledHeader>
+            <img className="banner" src={config.banner} />
             {/* <div> */}
             {/* <img src="banner" /> */}
 
