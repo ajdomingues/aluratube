@@ -1,9 +1,30 @@
 import React from "react";
 import { StyledRegisterVideo } from "./styles";
 
+// Whiteboarding
+// Cuustoom Hook
+function useForm(propsDoForm) {
+    const [values, setValues] = React.useState(propsDoForm.initialValues);
+
+    return {
+        values,
+        handleChange: (evento) => {
+            const value = evento.target.value;
+            const name = evento.target.name;
+            setValues({
+                ...values,
+                [name]: value,
+            });
+        }
+    };
+}
+
 export default function RegisterVideo() {
-    const [formVisivel, setFormVisivel] = React.useState(false);
-    const [values, setValues] = React.useState({ titulo: "", url: "" });
+    const formCadastro = useForm({
+        // initialValues: { titulo: "aaaa", url: "bbbbbb" }
+        initialValues: { titulo: "", url: "" }
+    });
+    const [formVisivel, setFormVisivel] = React.useState(true);
     // const [url, setUrl] = React.useState("");
     /*
     - dados necessários:
@@ -25,30 +46,39 @@ export default function RegisterVideo() {
         */}
             {formVisivel
                 ? (
-
-                    <form>
+                    <form onSubmit={(evento) => {
+                        evento.preventDefault();
+                        // console.log(values);
+                        setFormVisivel(false);
+                    }}>
                         <div>
                             <button className="close-modal" onClick={() => setFormVisivel(false)}>
                                 X
                             </button>
                             <input placeholder="Título do vídeo"
-                                value={values.titulo}
-                                onChange={(evento) => {
-                                    const value = evento.target.value;                                    
-                                    setValues({
-                                        ...values,
-                                        titulo: value,
-                                    });
-                                }} />
+                                name="titulo"
+                                value={formCadastro.values.titulo}
+                                onChange={formCadastro.handleChange}
+                            // onChange={(evento) => {
+                            //     const value = evento.target.value;
+                            //     setValues({
+                            //         ...values,
+                            //         titulo: value,
+                            //     });
+                            // }} 
+                            />
                             <input placeholder="URL"
-                                value={values.url}
-                                onChange={(evento) => {
-                                    const value = evento.target.value;
-                                    setValues({
-                                        ...values,
-                                        url: value,
-                                    });
-                                }}
+                                name="url"
+                                value={formCadastro.values.url}
+                                onChange={formCadastro.handleChange}
+
+                            // onChange={(evento) => {
+                            //     const value = evento.target.value;
+                            //     setValues({
+                            //         ...values,
+                            //         url: value,
+                            //     });
+                            // }}
                             />
                             <button type="submit">
                                 Cadastrar
