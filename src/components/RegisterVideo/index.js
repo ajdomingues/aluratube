@@ -1,8 +1,25 @@
 import React from "react";
 import { StyledRegisterVideo } from "./styles";
-
+import { createClient } from "@supabase/supabase-js";
 // Whiteboarding
-// Cuustoom Hook
+// Custom Hook
+
+//busca tumbnail
+function getThumbnail(url) {
+    return `https://img.youtube.com/vi/${url.split("v"[1])}/hqdefault.jpg`;
+}
+
+// busca info de vídeos do YouTube, dados gerais
+// function getVideoId(url) {
+//     const getVideoId = url.split("v=")[1];
+//     const ampersandPosition = videoId.indexOf("&");
+//     if (ampersandPosition !== -1) {
+//         return videoId.substring(0, ampersandPosition);
+//     }
+//     return videoId;
+// }
+
+
 function useForm(propsDoForm) {
     const [values, setValues] = React.useState(propsDoForm.initialValues);
 
@@ -22,12 +39,18 @@ function useForm(propsDoForm) {
     };
 }
 
+const PROJECT_URL = "https://ivwptwduqxtxhylwgkuu.supabase.co";
+const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2d3B0d2R1cXh0eGh5bHdna3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg1Mzc5MTIsImV4cCI6MTk4NDExMzkxMn0.XcD1bWFKpmkJP8grGo-0DrHDhWOyHMZ_dyaGAlE-n5c"
+// const supabase = createClient('https://xyzcompany.supabase.co', 'public-anon-key')
+const supabase = createClient(PROJECT_URL, PUBLIC_KEY)
+
 export default function RegisterVideo() {
     const formCadastro = useForm({
         // initialValues: { titulo: "aaaa", url: "bbbbbb" }
-        initialValues: { titulo: "", url: "" }
+        initialValues: { titulo: "" }
     });
     const [formVisivel, setFormVisivel] = React.useState(true);
+    //  console.log();
     // const [url, setUrl] = React.useState("");
     /*
     - dados necessários:
@@ -52,6 +75,20 @@ export default function RegisterVideo() {
                     <form onSubmit={(evento) => {
                         evento.preventDefault();
                         // console.log(values);
+
+                        // interface entre front e backend
+                        supabase.from("video").insert({
+                            title: formCadastro.values.titulo,
+                            url: formCadastro.values.url,
+                            thumb: getThumbnail(formCadastro.values.url),
+                            playlist: "jogos",
+                        })
+                            .then((oqueveio) => {
+                                console.log(oqueveio);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
                         setFormVisivel(false);
                         formCadastro.clearForm();
                     }}>
