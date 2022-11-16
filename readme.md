@@ -10,6 +10,18 @@ Aula 1:
         - NextJS
         - GitHub
 - Iniciando o projeto
+Ativando os arquivos necessários rodando os comandos:
+
+```ps
+npminstallnext react react-dom
+```
+
+Depois vem os componentes:
+
+```ps
+npm install --save styled-components 
+```
+
 - Criação do projeto no GitHub
 - Upload no GitHub
 - Link com Vercel e publicação
@@ -28,19 +40,47 @@ Aula 4:
 - Criação de Custom Hooks
 
 Aula 5:
-## USEEFFECT e Supabase
+## Useeffect e Supabase
 - Tabela video criada no Supabase
 - Banco de dados via Supabase
-- Configurações do supabase no projeto
-- Processo para identificar as thumbnails dos vídeos
-- Implementação do insert dos dados dos vídeos na tabela do Supabase
+- Configurações do supabase no projeto, adicionando os complementos via comandos:
+```js
+npm install @supabase/supabase-js 
+```
+A implementação no projeto pode ser feita utilizando a receita do próprio Supabase:
 
+Import:
 
-<!-- - `-app.js`: Carrega o setup base do projeto
-    - Aqui vão ficar os Providers de informação do nosso projeto
-    - CSSReset
+```js
+import { createClient } from '@supabase/supabase-js' 
+```
+Variáveis:
+```js
+const supabaseUrl = 'https://ivwptwduqxtxhylwgkuu.supabase.co' 
+const supabaseKey = process.env.SUPABASE_KEY 
+const supabase = createClient(supabaseUrl, supabaseKey) 
+```
 
+- Processo para identificar as thumbnails dos vídeos usando o retorno duma function. Poderia ter sido usado essa:
+```js
+busca info de vídeos do YouTube, dados gerais
+function getVideoId(url) {
+        const getVideoId = url.split("v=")[1];
+        const ampersandPosition = videoId.indexOf("&");
+    if (ampersandPosition !== -1) {
+        return videoId.substring(0, ampersandPosition);
+    }
+    return videoId;
+}
+```
 
-    - Tabela video criada no Supabase
-    - Banco de dados via Supabase
-    - Configurações do supabase no projeto -->
+Mas retornaria mais dados que precisariamos. Sendo mais simples usar essa:
+
+```js
+function getThumbnail(url) {
+    return `https://img.youtube.com/vi/${url.split("v=")[1]}/hqdefault.jpg`;
+}
+```
+- Implementação e teste do insert de dados na tabela criada no Supabase
+- Aplicação do useeffect
+- Separação de funções dentro de classe de serviços

@@ -4,20 +4,40 @@ import styled from "styled-components";
 // import { CSSReset } from "../src/components/CSSReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+// import { createClient } from "@supabase/supabase-js";
+import { videoService } from "../src/services/videoService";
 
 function HomePage() {
-    // const mensagem = 'Bem-vindo ao Alura Tube!'
-    // const estilosDaHomePage = {
-        // backgroundColor: "red" 
-    // };
-
+    const service = videoService();
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
+    const [playlists, setPlaylists] = React.useState({});     // config.playlists
+
+    React.useEffect(() => {
+        // console.log("useEffect");
+        service
+            .getAllVideos()
+            .then((dados) => {
+                // console.log(dados.data);
+                // imutável
+                // const novasPlaylists = { ...playlists };
+                const novasPlaylists = {};
+                dados.data.forEach((video) => {
+                    if (!novasPlaylists[video.playlist]) novasPlaylists[video.playlist] = [];
+                    // novasPlaylists[video.playlist].push(video);
+                    novasPlaylists[video.playlist] = [
+                        video,
+                        ...novasPlaylists[video.playlist],
+                    ];
+                });
+                setPlaylists(novasPlaylists);
+            });
+    }, []); // importante passar o array vazio no final
 
     // console.log(config.playlists);
 
     return (
         <>
-        {/* removido o CSSReset
+            {/* removido o CSSReset
             <CSSReset /> */}
             <div style={{
                 display: "flex",
@@ -28,10 +48,10 @@ function HomePage() {
                 {/* Prop Drilling */}
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
                 <Header />
-                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}>
+                <Timeline searchValue={valorDoFiltro} playlists={playlists}>
                     Conteúdo
                 </Timeline>
-                <Favoritos />
+                
             </div>
         </>
     );
@@ -48,7 +68,7 @@ export default HomePage
 // }
 
 const StyledHeader = styled.div`
-background-color: ${({theme})=>theme.backgroundLevel1};
+background-color: ${({ theme }) => theme.backgroundLevel1};
 
 img{
     width:80px;

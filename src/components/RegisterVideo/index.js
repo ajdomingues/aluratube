@@ -6,19 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 
 //busca tumbnail
 function getThumbnail(url) {
-    return `https://img.youtube.com/vi/${url.split("v"[1])}/hqdefault.jpg`;
+    return `https://img.youtube.com/vi/${url.split("v=")[1]}/hqdefault.jpg`;
 }
-
-// busca info de vídeos do YouTube, dados gerais
-// function getVideoId(url) {
-//     const getVideoId = url.split("v=")[1];
-//     const ampersandPosition = videoId.indexOf("&");
-//     if (ampersandPosition !== -1) {
-//         return videoId.substring(0, ampersandPosition);
-//     }
-//     return videoId;
-// }
-
 
 function useForm(propsDoForm) {
     const [values, setValues] = React.useState(propsDoForm.initialValues);
@@ -27,7 +16,7 @@ function useForm(propsDoForm) {
         values,
         handleChange: (evento) => {
             const value = evento.target.value;
-            const name = evento.target.name;
+            const name = evento.target.name
             setValues({
                 ...values,
                 [name]: value,
@@ -40,16 +29,16 @@ function useForm(propsDoForm) {
 }
 
 const PROJECT_URL = "https://ivwptwduqxtxhylwgkuu.supabase.co";
-const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2d3B0d2R1cXh0eGh5bHdna3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg1Mzc5MTIsImV4cCI6MTk4NDExMzkxMn0.XcD1bWFKpmkJP8grGo-0DrHDhWOyHMZ_dyaGAlE-n5c"
+const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2d3B0d2R1cXh0eGh5bHdna3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg1Mzc5MTIsImV4cCI6MTk4NDExMzkxMn0.XcD1bWFKpmkJP8grGo-0DrHDhWOyHMZ_dyaGAlE-n5c";
 // const supabase = createClient('https://xyzcompany.supabase.co', 'public-anon-key')
 const supabase = createClient(PROJECT_URL, PUBLIC_KEY)
 
 export default function RegisterVideo() {
     const formCadastro = useForm({
-        // initialValues: { titulo: "aaaa", url: "bbbbbb" }
-        initialValues: { titulo: "" }
+        initialValues: { titulo: "", url: "" }
+        // initialValues: { titulo: "Frost punk", url: "https://www.youtube.com/watch?v=QsqatJxAUtk" }
     });
-    const [formVisivel, setFormVisivel] = React.useState(true);
+    const [formVisivel, setFormVisivel] = React.useState(false);
     //  console.log();
     // const [url, setUrl] = React.useState("");
     /*
@@ -96,7 +85,8 @@ export default function RegisterVideo() {
                             <button type="button" className="close-modal" onClick={() => setFormVisivel(false)}>
                                 X
                             </button>
-                            <input placeholder="Título do vídeo"
+                            <input
+                                placeholder="Título do vídeo"
                                 name="titulo"
                                 value={formCadastro.values.titulo}
                                 onChange={formCadastro.handleChange}
